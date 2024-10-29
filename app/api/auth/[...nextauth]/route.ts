@@ -4,6 +4,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import prisma from '../../../lib/prismadb';
 
+// Define your authentication options
 export const authOptions: AuthOptions = {
     adapter: PrismaAdapter(prisma),
     providers: [
@@ -11,25 +12,23 @@ export const authOptions: AuthOptions = {
             name: 'Credentials',
             credentials: {
                 email: { label: 'Email', type: 'text' },
-                password: { label: 'Password', type: 'password' },
+                password: { label: 'Password', type: 'password' }
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
                     throw new Error('Invalid credentials');
                 }
                 
-                // Find user in the database by email
                 const user = await prisma.user.findUnique({
                     where: {
-                        email: credentials.email,
-                    },
+                        email: credentials.email
+                    }
                 });
 
                 if (!user || !user.hashedPassword) {
                     throw new Error('Invalid credentials');
                 }
 
-                // Compare the password entered by user with the hashed password
                 const isCorrect = await bcrypt.compare(credentials.password, user.hashedPassword);
                 
                 if (!isCorrect) {
@@ -37,19 +36,21 @@ export const authOptions: AuthOptions = {
                 }
 
                 return user;
-            },
-        }),
+            }
+        })
     ],
     pages: {
-        signIn: '/',
+        signIn: '/'
     },
     debug: process.env.NODE_ENV === 'development',
     session: {
         strategy: 'jwt',
     },
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET
 };
 
-// NextAuth handler for both GET and POST requests
+// Create the NextAuth handler
 const handler = NextAuth(authOptions);
+
+// Export the handler as GET and POST
 export { handler as GET, handler as POST };
