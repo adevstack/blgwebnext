@@ -1,18 +1,17 @@
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcrypt';
+import NextAuth, { AuthOptions } from 'next-auth';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import prisma from '../../../lib/prismadb';
 
-import NextAuth, {AuthOptions} from 'next-auth'
-import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import CredentialsProvider from 'next-auth/providers/credentials'
-import prisma from '../../../lib/prismadb'
-
-export const authOptions = {
+export const authOptions: AuthOptions = {
     adapter: PrismaAdapter(prisma),
     providers: [
         CredentialsProvider({
             name: 'Credentials',
             credentials: {
                 email: { label: 'Email', type: 'text' },
-                password: { label: 'Password', type: 'password' }
+                password: { label: 'Password', type: 'password' },
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
@@ -22,8 +21,8 @@ export const authOptions = {
                 // Find user in the database by email
                 const user = await prisma.user.findUnique({
                     where: {
-                        email: credentials.email
-                    }
+                        email: credentials.email,
+                    },
                 });
 
                 if (!user || !user.hashedPassword) {
@@ -38,18 +37,19 @@ export const authOptions = {
                 }
 
                 return user;
-            }
-        })
+            },
+        }),
     ],
     pages: {
-        signIn:'/'
+        signIn: '/',
     },
-    debug:process.env.NODE_ENV === 'development',
+    debug: process.env.NODE_ENV === 'development',
     session: {
         strategy: 'jwt',
     },
-    secret:process.env.NEXTAUTH_SECRET
+    secret: process.env.NEXTAUTH_SECRET,
 };
 
-const handler = NextAuth(authOptions)
-export {handler as GET, handler as POST}
+// NextAuth handler for both GET and POST requests
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };

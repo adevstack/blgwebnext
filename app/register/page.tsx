@@ -2,7 +2,7 @@
 
 import Input from "@/components/input/Input";
 import axios from "axios";
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Hero from "@/components/main/Hero";
@@ -23,7 +23,7 @@ export default function Page() {
   const [state, setState] = useState(initialState);
   const router = useRouter();
 
-  function handleChange(e: any) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     setState({ ...state, [e.target.name]: e.target.value });
   }
 
@@ -38,7 +38,7 @@ export default function Page() {
           router.push('/login');
         }, 2500);
       })
-      .catch((err: any) => {
+      .catch((err: unknown) => {
         console.error(err);
       });
   };

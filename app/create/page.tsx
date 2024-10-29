@@ -6,8 +6,6 @@ import Input from "@/components/input/Input";
 import ImageUpload from "@/components/input/ImageUpload";
 import Hero from "@/components/main/Hero";
 import axios from "axios";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 interface InitialStateProps {
     name?: string;

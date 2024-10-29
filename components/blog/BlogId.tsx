@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import axios from 'axios';
@@ -24,12 +25,6 @@ interface InitialStateProps {
     description: string;
     imageSrc: string;
 }
-
-const initialState: InitialStateProps = {
-    name: '',
-    description: '',
-    imageSrc: ''
-};
 
 export default function BlogId({ name, description, imageSrc, blogId, authorName }: BlogProps) {
     const router = useRouter();
@@ -72,7 +67,7 @@ export default function BlogId({ name, description, imageSrc, blogId, authorName
             });
     };
 
-    const setCustomValue = (id: unknown, value: unknown) => {
+    const setCustomValue = (id: string, value: unknown) => {
         setState((prevValues) => ({
             ...prevValues,
             [id]: value,

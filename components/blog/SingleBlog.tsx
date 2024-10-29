@@ -6,7 +6,6 @@ import { SafeBlogs, SafeUser } from "@/types/type";
 import Image from "next/image";
 import { BsFillPencilFill } from "react-icons/bs";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 
 interface BlogProps {
   data: SafeBlogs; // Ensure SafeBlogs includes authorName
@@ -15,21 +14,7 @@ interface BlogProps {
 
 export default function SingleBlog({ data, currentUser }: BlogProps) {
   const router = useRouter();
-
-  const onDelete = () => {
-    axios
-      .delete(`/api/blogs/${data.id}`)
-      .then(() => {
-        router.refresh();
-      })
-      .catch((error) => {
-        console.error("Error deleting blog:", error); // Log the error instead of throwing it
-      })
-      .finally(() => {
-        router.push('/'); // Redirect to the home page after delete
-      });
-  };
-
+  
   return (
     <div className="max-w-[300px] border border-gray-300 rounded-lg shadow-lg p-4 bg-transparent hover:shadow-xl transition-shadow duration-300">
       <div className="flex flex-col items-start">

@@ -24,11 +24,6 @@ interface InitialStateProps {
     imageSrc: string;
 }
 
-const initialState: InitialStateProps = {
-    name: '',
-    description: '',
-    imageSrc: ''
-};
 
 export default function BlogId({ name, description, imageSrc, blogId, authorName }: BlogProps) {
     const router = useRouter();
@@ -71,7 +66,7 @@ export default function BlogId({ name, description, imageSrc, blogId, authorName
             });
     };
 
-    const setCustomValue = (id: unknown, value: unknown) => {
+    const setCustomValue = (id: string, value: unknown) => {
         setState((prevValues) => ({
             ...prevValues,
             [id]: value,
